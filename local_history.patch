@@ -1,0 +1,88 @@
+Index: src/poo/recursion/secondoprogetto/Sudoku.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/poo/recursion/secondoprogetto/Sudoku.java	(date 1576428107450)
++++ src/poo/recursion/secondoprogetto/Sudoku.java	(date 1576428107450)
+@@ -33,6 +33,7 @@
+     }//imposta
+ 
+      private boolean assegnabile(int i, int j, int v) {
++        if(traccia[i][j]) return false;
+         int r, c;
+         for (r = 0; r < N; r++) if (board[r][j] == v) return false;
+         for (c = 0; c < N; c++) if (board[i][c] == v) return false;
+@@ -47,32 +48,25 @@
+     }//risolvi
+ 
+     public void colloca(int i, int j) {
+-        for(int v=1;v<=N; v++){
+-            if(!traccia[i][j]) {
+-                if (assegnabile(i, j, v)) {
+-                    assegna(i, j, v);
+-                    if (i == N - 1 && j == N - 1) stampaSoluzione();
+-                    else {
+-                        if (j == N - 1) colloca(i + 1, 0);
+-                        else colloca(i, (j + 1) % N);
+-                    }//else
+-                    deassegna(i,j,v);
+-                }//if
+-            }//iftraccia
+-            else do{
+-                if (j == N - 1) i++;
+-                j=(j+1)%N;
+-            }while(traccia[i][j]);
+-        }//for sulle scelte
+-
+-    }//colloca
++        //if (!traccia[i][j]) {
++            for (int v = 1; v < 10; v++) {
++                if (assegnabile(i, j, v)) assegna(i, j, v);
++                if (i == N - 1 && j == N - 1) stampaSoluzione();
++                else {
++                    if (j == N - 1) colloca(i + 1, 0);
++                    else colloca(i, (j + 1) % N);
++                }
++                deassegna(i, j, v);
++            }//for
++    //    }//iftraccia
++    }
+ 
+ 
+ 
+     public void stampaSoluzione() {
+         numSol++;
+         for (int i = 0; i < board.length; i++) {
+-            System.out.println("--------------------------------------");
++            System.out.println("------------------------");
+             for(int j=0; j<N;++j){
+                 if(j%3==0&&j!=0)System.out.print("|");
+                 System.out.print(" "+board[i][j]);
+@@ -80,6 +74,7 @@
+             }//forJ
+         }//forI
+         System.out.println("Numero soluzione:" +numSol);
++        if(numSol==100)System.exit(0);
+     }//stampaSoluzione
+ 
+     private void assegna(int i, int j, int v) {
+@@ -87,7 +82,8 @@
+     }//assegna
+ 
+     private void deassegna(int i, int j, int v) {
+-        if(!traccia[i][j])board[i][j] = 0;
++       // if(!traccia[i][j])
++            board[i][j] = 0;
+     }//deassegna
+ 
+     public String toString() {
+@@ -109,7 +105,7 @@
+                 {8, 5, 2}, {8, 4, 7}, {7, 4, 3},
+                 {8, 2, 5}, {7, 4, 7}, {1, 6, 3},
+                 {3, 4, 6}, {3, 4, 1}, {1, 5, 9},
+-                 {5, 4, 2}, {3, 6, 8},
++                {8,8,3},{5, 4, 2}, {3, 6, 8},
+                 {5, 2, 7}, {7, 1, 1}, {2, 2, 1}};
+         Sudoku s = new Sudoku(a);
+         System.out.println(s);
